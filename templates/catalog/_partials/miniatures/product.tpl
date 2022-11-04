@@ -30,23 +30,73 @@
         {block name='product_thumbnail'}
           {if $product.cover}
             <a href="{$product.url}" class="thumbnail product-thumbnail">
-              <img
-                src="{$product.cover.bySize.home_default.url}"
-                alt="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name|truncate:30:'...'}{/if}"
-                loading="lazy"
-                data-full-size-image-url="{$product.cover.large.url}"
-                width="{$product.cover.bySize.home_default.width}"
-                height="{$product.cover.bySize.home_default.height}"
-              />
+              <picture>
+                {if isset($product.cover.bySize.default_md.sources.avif)}
+                  <source 
+                    srcset="
+                      {$product.cover.bySize.default_md.sources.avif},
+                      {$product.cover.bySize.product_main.sources.avif} 2x"
+                    type="image/avif"
+                  >
+                {/if}
+
+                {if isset($product.cover.bySize.default_md.sources.webp)}
+                  <source 
+                    srcset="
+                      {$product.cover.bySize.default_md.sources.webp},
+                      {$product.cover.bySize.product_main.sources.webp} 2x"
+                    type="image/webp"
+                  >
+                {/if}
+
+                <img
+                  srcset="
+                    {$product.cover.bySize.default_md.url},
+                    {$product.cover.bySize.product_main.url} 2x"
+                  src="{$product.cover.bySize.default_md.url}" 
+                  width="{$product.cover.bySize.default_md.width}"
+                  height="{$product.cover.bySize.default_md.height}"
+                  loading="lazy"
+                  alt="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+                  title="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+                  data-full-size-image-url="{$product.cover.bySize.home_default.url}"
+                >
+              </picture>
             </a>
           {else}
             <a href="{$product.url}" class="thumbnail product-thumbnail">
-              <img
-                src="{$urls.no_picture_image.bySize.home_default.url}"
-                loading="lazy"
-                width="{$urls.no_picture_image.bySize.home_default.width}"
-                height="{$urls.no_picture_image.bySize.home_default.height}"
-              />
+              <picture>
+                {if isset($urls.no_picture_image.bySize.default_md.sources.avif)}
+                  <source 
+                    srcset="
+                      {$urls.no_picture_image.bySize.default_md.sources.avif},
+                      {$urls.no_picture_image.bySize.product_main.sources.avif} 2x"
+                    type="image/avif"
+                  >
+                {/if}
+
+                {if isset($urls.no_picture_image.bySize.default_md.sources.webp)}
+                  <source 
+                    srcset="
+                      {$urls.no_picture_image.bySize.default_md.sources.webp},
+                      {$urls.no_picture_image.bySize.product_main.sources.webp} 2x"
+                    type="image/webp"
+                  >
+                {/if}
+
+                <img
+                  class="{$componentName}__image card-img-top"
+                  srcset="
+                    {$urls.no_picture_image.bySize.default_md.url},
+                    {$urls.no_picture_image.bySize.product_main.url} 2x"
+                  width="{$urls.no_picture_image.bySize.default_md.width}"
+                  height="{$urls.no_picture_image.bySize.default_md.height}"
+                  src="{$urls.no_picture_image.bySize.default_md.url}" 
+                  loading="lazy"
+                  alt="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+                  title="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+                >
+              </picture>
             </a>
           {/if}
         {/block}

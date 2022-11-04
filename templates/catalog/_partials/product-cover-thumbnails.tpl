@@ -26,30 +26,75 @@
   {block name='product_cover'}
     <div class="product-cover">
       {if $product.default_image}
-        <img
-          class="js-qv-product-cover img-fluid"
-          src="{$product.default_image.bySize.large_default.url}"
-          {if !empty($product.default_image.legend)}
-            alt="{$product.default_image.legend}"
-            title="{$product.default_image.legend}"
-          {else}
-            alt="{$product.name}"
+        <picture>
+          {if isset($product.default_image.bySize.product_main.sources.avif)}
+            <source 
+              srcset="
+                {$product.default_image.bySize.product_main.sources.avif},
+                {$product.default_image.bySize.product_main_2x.sources.avif} 2x"
+              type="image/avif"
+            >
           {/if}
-          loading="lazy"
-          width="{$product.default_image.bySize.large_default.width}"
-          height="{$product.default_image.bySize.large_default.height}"
-        >
+
+          {if isset($product.default_image.bySize.product_main.sources.webp)}
+            <source 
+              srcset="
+                {$product.default_image.bySize.product_main.sources.webp},
+                {$product.default_image.bySize.product_main_2x.sources.webp} 2x"
+              type="image/webp"
+            >
+          {/if}
+
+          <img
+            class="js-qv-product-cover img-fluid"
+            srcset="
+              {$product.default_image.bySize.product_main.url},
+              {$product.default_image.bySize.product_main_2x.url} 2x"
+            src="{$product.default_image.bySize.product_main.url}" 
+            width="{$product.default_image.bySize.product_main.width}"
+            height="{$product.default_image.bySize.product_main.height}"
+            loading="eager"
+            alt="{if !empty($product.default_image)}{$product.default_image.legend}{else}{$product.name}{/if}"
+            title="{if !empty($product.default_image.legend)}{$product.default_image.legend}{else}{$product.name}{/if}"
+            data-full-size-image-url="{$product.default_image.bySize.home_default.url}"
+        </picture>
+
         <div class="layer hidden-sm-down" data-toggle="modal" data-target="#product-modal">
           <i class="material-icons zoom-in">search</i>
         </div>
       {else}
-        <img
-          class="img-fluid"
-          src="{$urls.no_picture_image.bySize.medium_default.url}"
-          loading="lazy"
-          width="{$urls.no_picture_image.bySize.medium_default.width}"
-          height="{$urls.no_picture_image.bySize.medium_default.height}"
-        >
+        <picture>
+          {if isset($urls.no_picture_image.bySize.product_main.sources.avif)}
+            <source 
+              srcset="
+                {$urls.no_picture_image.bySize.product_main.sources.avif},
+                {$urls.no_picture_image.bySize.product_main_2x.sources.avif} 2x"
+              type="image/avif"
+            >
+          {/if}
+
+          {if isset($urls.no_picture_image.bySize.product_main.sources.webp)}
+            <source 
+              srcset="
+                {$urls.no_picture_image.bySize.product_main.sources.webp},
+                {$urls.no_picture_image.bySize.product_main_2x.sources.webp} 2x"
+              type="image/webp"
+            >
+          {/if}
+
+          <img
+            class="img-fluid"
+            srcset="
+              {$urls.no_picture_image.bySize.product_main.url},
+              {$urls.no_picture_image.bySize.product_main_2x.url} 2x"
+            width="{$urls.no_picture_image.bySize.product_main.width}"
+            height="{$urls.no_picture_image.bySize.product_main.height}"
+            src="{$urls.no_picture_image.bySize.product_main.url}" 
+            loading="lazy"
+            alt="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+            title="{if !empty($product.cover.legend)}{$product.cover.legend}{else}{$product.name}{/if}"
+          >
+        </picture>
       {/if}
     </div>
   {/block}
@@ -59,21 +104,40 @@
       <ul class="product-images js-qv-product-images">
         {foreach from=$product.images item=image}
           <li class="thumb-container js-thumb-container">
-            <img
-              class="thumb js-thumb {if $image.id_image == $product.default_image.id_image} selected js-thumb-selected {/if}"
-              data-image-medium-src="{$image.bySize.medium_default.url}"
-              data-image-large-src="{$image.bySize.large_default.url}"
-              src="{$image.bySize.small_default.url}"
-              {if !empty($image.legend)}
-                alt="{$image.legend}"
-                title="{$image.legend}"
-              {else}
-                alt="{$product.name}"
+            <picture>
+              {if isset($image.bySize.default_xs.sources.avif)}
+                <source 
+                  srcset="
+                    {$image.bySize.default_xs.sources.avif},
+                    {$image.bySize.default_m.sources.avif} 2x",
+                  type="image/avif"
+                >
               {/if}
-              loading="lazy"
-              width="{$product.default_image.bySize.small_default.width}"
-              height="{$product.default_image.bySize.small_default.height}"
-            >
+
+              {if isset($image.bySize.default_xs.sources.webp)}
+                <source 
+                  srcset="
+                    {$image.bySize.default_xs.sources.webp},
+                    {$image.bySize.default_m.sources.webp} 2x"
+                  type="image/webp"
+                >
+              {/if}
+
+              <img
+                class="thumb js-thumb {if $image.id_image == $product.default_image.id_image} selected js-thumb-selected {/if}"
+                srcset="
+                  {$image.bySize.default_xs.url},
+                  {$image.bySize.default_m.url} 2x"
+                width="{$image.bySize.default_xs.width}"
+                height="{$image.bySize.default_xs.height}"
+                loading="lazy"
+                alt="{if !empty($image)}{$image.legend}{else}{$product.name}{/if}"
+                title="{if !empty($image.legend)}{$image.legend}{else}{$product.name}{/if}"
+                data-full-size-image-url="{$product.cover.bySize.home_default.url}"
+                data-image-medium-src="{$image.bySize.product_main.url}"
+                data-image-large-src="{$image.bySize.product_main_2x.url}"
+              >
+            </picture>
           </li>
         {/foreach}
       </ul>

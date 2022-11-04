@@ -35,15 +35,40 @@
       <article id="store-{$store.id}" class="store-item card">
         <div class="store-item-container clearfix">
           <div class="col-md-3 store-picture hidden-sm-down">
-            <img
-              src="{$store.image.bySize.stores_default.url}"
-              {if !empty($store.image.legend)}
-                alt="{$store.image.legend}"
-                title="{$store.image.legend}"
-              {else}
-                alt="{$store.name}"
+            <picture>
+              {if isset($store.image.bySize.stores_default.sources.avif)}
+                <source 
+                  srcset="
+                    {$store.image.bySize.stores_default.sources.avif},
+                    {$store.image.bySize.stores_default_2x.sources.avif} 2x"
+                  type="image/avif"
+                >
               {/if}
-            >
+
+              {if isset($store.image.bySize.stores_default.sources.webp)}
+                <source 
+                  srcset="
+                    {$store.image.bySize.stores_default.sources.webp},
+                    {$store.image.bySize.stores_default_2x.sources.webp} 2x"
+                  type="image/webp"
+                >
+              {/if}
+
+              <img
+                class="img-fluid rounded"
+                srcset="
+                  {$store.image.bySize.stores_default.url},
+                  {$store.image.bySize.stores_default_2x.url} 2x"
+                loading="lazy"
+                width="{$store.image.bySize.stores_default.width}"
+                height="{$store.image.bySize.stores_default.height}"
+                {if !empty($store.image.legend)}
+                  alt="{$store.image.legend}"
+                  title="{$store.image.legend}"
+                {else}
+                  alt="{$store.name}"
+                {/if}
+            </picture>
           </div>
           <div class="col-md-5 col-sm-7 col-xs-12 store-description">
             <p class="h3 card-title">{$store.name}</p>
